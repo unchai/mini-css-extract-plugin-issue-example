@@ -1,10 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const srcdir = path.resolve(__dirname, "src");
 
 module.exports = {
+	mode: "development",
 	entry: {
 		entryA: path.join(srcdir, "/entryA.js"),
 		entryB: path.join(srcdir, "/entryB.js"),
@@ -19,12 +20,14 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract("css-loader"),
+				use: [MiniCssExtractPlugin.loader, "css-loader"],
 			}
 		],
 	},
 	plugins: [
-		new ExtractTextPlugin("[contenthash].css"),
+		new MiniCssExtractPlugin({
+			filename: "[contenthash].css",
+		}),
 	],
 };
 
